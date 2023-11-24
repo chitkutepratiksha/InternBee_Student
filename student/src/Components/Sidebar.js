@@ -21,7 +21,7 @@ const Sidebar = () => {
     };
 
     return (
-        <div className="{`sidebar bg-${darkMode ? 'gray' : 'custom-white'} w-96 h-screen p-4 border shadow-xl flex flex-col">
+        <div className="w-96 h-screen  p-4 border shadow-xl flex flex-col fixed top-0 left-0">
             {/* User information */}
             <div className="mb-6 pb-2 border-b shadow-lm">
                 <FaUser className="mr-4  text-6xl" />
@@ -34,17 +34,17 @@ const Sidebar = () => {
                 <FaCog className="mr-2  text-2xl" />
                 <p className=" text-2xl">Preferences</p>
             </div>
-            <div className="mb-6 pb-2 border-b shadow-lg flex items-center">
+            {/* <div className="mb-6 pb-2 border-b shadow-lg flex items-center">
                 <IoMoonOutline className="mr-2  text-2xl" />
                 <p className=" text-2xl">Night Mode</p>
                 <div className="ml-auto">
-                    {/* Toggle switch using Tailwind CSS */}
+                   
                     <label className="switch relative inline-block w-10 h-6 cursor-pointer border-radius">
                         <input type="checkbox" className="hidden" onChange={toggleDarkMode} checked={darkMode} />
                         <span className={`slider absolute w-6 h-6 rounded-full transition-transform duration-300 ease-in-out ${darkMode ? 'bg-blue-500 transform translate-x-full' : 'bg-blue-500'}`}></span>
                     </label>
                 </div>
-            </div>
+            </div> */}
 
             {/* Go Pro */}
             <div className="mb-6 pb-2 border-b shadow-lg flex items-center">
