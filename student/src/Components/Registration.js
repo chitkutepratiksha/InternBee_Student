@@ -23,35 +23,35 @@ const Registration = () => {
         setShowConfirmPassword(!showConfirmPassword);
     };
 
+const onSubmit = async (data) => {
+  const { confirmPassword, ...postData } = data;
 
-    const onSubmit = async (data) => {
-        const { confirmPassword, ...postData } = data;
+  try {
+    const response = await fetch("http://localhost:8000/auth/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        fullName: postData.fullName,
+        email: postData.email,
+        password: postData.password,
+        number: postData.number,
+        userType: "student", 
+      }),
+    });
 
-        // Add userType to the data
-        postData.userType = 'student';
+    const result = await response.json();
+    console.log(result);
 
-        console.log(postData);
+    // Redirect to another page after successful registration
+    alert("Data Submitted Successfully!");
 
-        try {
-            const response = await fetch('http://localhost:8000/auth/signup', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            });
-
-            const result = await response.json();
-            console.log(result);
-
-            // Redirect to another page after successful registration
-            alert("Data Submitted Successfully!");
-
-            navigate('/Signin');
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    };
+    navigate("/Signin");
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
 
     const sendEmailOTP = () => {
 
