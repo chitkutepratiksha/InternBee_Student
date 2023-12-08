@@ -1,13 +1,17 @@
 import React, { useState, useRef } from 'react';
+import { useForm } from 'react-hook-form';
+import Sidebar from './Sidebar';
+
+import { IoNotificationsOutline } from 'react-icons/io5';
+import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useNavigate } from 'react-router-dom';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-
 import {
     FaCalendar, FaMoneyBill, FaMapMarkerAlt, FaRegClock, FaMobile, FaPalette, FaCode, FaChartBar,
-    FaUsers, FaGreaterThan, FaFacebook, FaTwitter, FaLinkedin, FaInstagram
+    FaUsers, FaGreaterThan, FaFacebook, FaTwitter, FaLinkedin, FaInstagram, FaUser
 } from 'react-icons/fa';
 
 import Footer from '../Components/Footer';
@@ -15,7 +19,7 @@ import Footer from '../Components/Footer';
 
 const RightArrow = ({ onClick }) => (
     <div className="absolute right-0 top-1/2 transform -translate-y-1/2 cursor-pointer" onClick={onClick}>
-        {/* You can customize the right arrow icon here */}
+
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
         </svg>
@@ -24,63 +28,35 @@ const RightArrow = ({ onClick }) => (
 
 const LeftArrow = ({ onClick }) => (
     <div className="absolute left-0 top-1/2 transform -translate-y-1/2 cursor-pointer" onClick={onClick}>
-        {/* You can customize the left arrow icon here */}
+
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
         </svg>
     </div>
 );
 
-const Home = () => {
-    const navigate = useNavigate();
+const Home1 = () => {
     const companiesRef = useRef(null);
     const internshipsRef = useRef(null);
-    const [showDropdown, setShowDropdown] = useState(false);
-    const [selectedUserType, setSelectedUserType] = useState(null);
-    const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
+    const navigate = useNavigate();
+    const [showProfileDropdown, setShowProfileDropdown] = useState(false);
 
-    const handleLoginClick = (event) => {
-        const buttonRect = event.target.getBoundingClientRect();
-        setDropdownPosition({
-            top: buttonRect.bottom + window.scrollY,
-            left: buttonRect.left + window.scrollX,
-        });
-        setShowDropdown(!showDropdown);
-        setSelectedUserType('login');
+    const handleProfileIconClick = () => {
+        setShowProfileDropdown(!showProfileDropdown);
     };
 
-    const handleRegisterClick = (event) => {
-        const buttonRect = event.target.getBoundingClientRect();
-        setDropdownPosition({
-            top: buttonRect.bottom + window.scrollY,
-            left: buttonRect.left + window.scrollX,
-        });
-        setShowDropdown(!showDropdown);
-        setSelectedUserType('register');
+    const handleViewProfile = () => {
+
+        navigate('/Profile')
+
     };
 
-    const handleUserTypeSelect = (userType) => {
-        setShowDropdown(false);
+    const handleLogout = () => {
 
-        if (userType === 'employer') {
-            // Provide different links for employer
-            if (selectedUserType === 'login') {
-                navigate('/employer-login');
-            } else if (selectedUserType === 'register') {
-                navigate('/employer-register');
-            }
-        } else if (userType === 'student') {
-            // Provide different links for the student in login and register buttons
-            if (selectedUserType === 'login') {
-                navigate('/Signin');
-            } else if (selectedUserType === 'register') {
-                navigate('/Registration');
-            }
-        }
+        navigate('/Signin')
+
+
     };
-
-
-
 
     const handleCompaniesClick = () => {
         if (companiesRef.current) {
@@ -93,13 +69,20 @@ const Home = () => {
             internshipsRef.current.scrollIntoView({ behavior: 'smooth' });
         }
     };
-
-
     const Internship = () => {
-        navigate('/Internship');
+        navigate('/Internship')
+    }
+
+    const handleResume = () => {
+        navigate('/Resume');
+    };
+    const handleregistration = () => {
+        navigate('/Registration');
+    };
+    const handleSignin = () => {
+        navigate('/Signin');
     };
 
-    // Dummy data for companies
     const companies = [
         {
             id: 1,
@@ -135,42 +118,28 @@ const Home = () => {
     ];
 
     const internships = [
-
         {
             id: 1,
-            companyName: 'Tata Consultancy Service',
-            position: 'Fronted Developer',
-            reviews: 4.2,
-            duration: 1,
-            stipend: 'Rs. 12,000/month',
-            location: 'Mumbai',
-            skillsRequired: ['Java', 'Spring Boot', 'Hibernate'],
-            deadline: '2023-12-20',
+            companyName: 'Accenture',
+            reviews: 4.5,
+            experienceRequired: 2,
+            stipend: 'Rs. 15,000 per month',
+            location: 'Bangalore',
+            skillsRequired: ['React', 'Node.js', 'MongoDB'],
+            deadline: '2023-12-31',
         },
         {
-            id: 1,
+            id: 2,
             companyName: 'Tata Consultancy Service',
-            position: 'Fronted Developer',
             reviews: 4.2,
-            duration: 1,
-            stipend: 'Rs. 12,000/month',
+            experienceRequired: 1,
+            stipend: 'Rs. 12,000 per month',
             location: 'Mumbai',
             skillsRequired: ['Java', 'Spring Boot', 'Hibernate'],
             deadline: '2023-12-20',
         },
-        {
-            id: 3,
-            companyName: 'dhsbdb',
-            position: 'Fronted Developer',
-            reviews: 4.2,
-            duration: 1,
-            stipend: 'Rs. 12,000/month',
-            location: 'Mumbai',
-            skillsRequired: ['Java', 'Spring Boot', 'Hibernate'],
-            deadline: '2023-12-20',
-        },
+        // Add more internships as needed
     ];
-
     const yourCardArray = [
         {
             icons: FaMobile,
@@ -198,7 +167,7 @@ const Home = () => {
             jobs: 40
         },
 
-    ]
+    ];
 
     const settings = {
         infinite: true,
@@ -208,85 +177,68 @@ const Home = () => {
         prevArrow: <LeftArrow />,
         draggable: false,
     };
-    const socialIcons = [
-        <FaFacebook key="facebook" />,
-        <FaTwitter key="twitter" />,
-        <FaLinkedin key="linkedin" />,
-        <FaInstagram key="instagram" />,
-    ];
 
-    const navbarContent = [
-        { label: 'About Us', link: '/about-us' },
-        { label: 'Contact', link: '/contact' },
-        { label: 'FAQ', link: '/faq' },
-    ];
 
-    const rolesContent = yourCardArray.map(card => card.role);
-
-    const locationContent = ['New York', 'San Francisco', 'London', 'Tokyo'];
+    const Internshipp = () => {
+        navigate('/Internship');
+    };
 
 
     return (
         <>
             <div className="mb-10">
                 <div className="navbar-container fixed top-0 left-0 w-full z-50 bg-white shadow-md p-4 flex items-center justify-between border">
-                    {/* <div className=" p-6 flex items-center justify-between  border shadow-xl"> */}
                     <div className="flex items-center space-x-2">
                         <img src="./logo.png" alt="Logo" className="w-14 h-14 rounded-full" />
                         <h1 className="text-4xl font-bold">Interns <span className="text-4xl font-bold text-amber-300">Bee</span></h1>
                     </div>
-
-                    <div className="items-center space-x-6">
+                    <div className="flex items-center space-x-6">
                         <a href="#" className="text-2xl font-bold focus:text-yellow-300 focus:border-yellow-300 focus:border-b-4">Home</a>
                         <a href="#" className="text-2xl font-bold focus:text-yellow-300 focus:border-yellow-300 focus:border-b-4" onClick={handleCompaniesClick}>Companies</a>
-                        <a href="#" className="text-2xl font-bold focus:text-yellow-300 focus:border-yellow-300 focus:border-b-4" onClick={handleInternshipsClick}>Internships</a>
+                        <a href="#" className="text-2xl font-bold focus:text-yellow-300 focus:border-yellow-300 focus:border-b-4" onClick={Internship}>Internships</a>
                     </div>
 
-                    <div className="flex items-center space-x-6 mr-10"
-                    >
-
-                        <button
-                            className="px-6 py-2 text-xl font-bold border rounded-md focus:outline-none"
-                            onClick={handleLoginClick}
+                    <div className="flex items-center">
+                        <input
+                            type="text"
+                            placeholder="Search..."
+                            className="p-2 rounded-md mr-2 border"
+                        />
+                    </div>
+                    <div className="flex items-center space-x-4 relative">
+                        <div className="">
+                            <IoNotificationsOutline className="mr-4  text-4xl" />
+                        </div>
+                        <div
+                            className="cursor-pointer"
+                            onMouseEnter={() => setShowProfileDropdown(true)}
+                            // onMouseLeave={() => setShowProfileDropdown(false)}
+                            onClick={handleProfileIconClick}
 
                         >
-                            Login
-                        </button>
-
-                        <button
-                            className="px-6 py-2 text-xl font-bold border rounded-md bg-yellow-300 focus:outline-none"
-                            onClick={handleRegisterClick}
-
-                        >
-                            Register
-                        </button>
-
-                        {/* Dropdown for employer and student */}
-                        {showDropdown && (
-                            <div
-                                className="absolute w-36 bg-white border rounded-md shadow-md  ml-6"
-                                style={{ top: dropdownPosition.top, left: dropdownPosition.left }}
-                            >
-                                <div
-                                    className="cursor-pointer border-b border-gray-700 py-4 flex flex-col items-center"
-                                    onClick={() => handleUserTypeSelect('employer')}
-                                >
-                                    Employer
+                            <FaUser className="mr-4  text-4xl" />
+                            {showProfileDropdown && (
+                                <div className="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-md">
+                                    <div
+                                        className="py-2 px-4 cursor-pointer hover:bg-gray-100"
+                                        onClick={handleViewProfile}
+                                    >
+                                        View & Update Profile
+                                    </div>
+                                    <div
+                                        className="py-2 px-4 cursor-pointer hover:bg-gray-100"
+                                        onClick={handleLogout}
+                                    >
+                                        Log Out
+                                    </div>
                                 </div>
-                                <div
-                                    className="cursor-pointer flex flex-col items-center py-4"
-                                    onClick={() => handleUserTypeSelect('student')}
-                                >
-                                    Student
-                                </div>
-                            </div>
-                        )}
-                        {/* </div> */}
+                            )}
+                        </div>
                     </div>
                 </div>
 
                 <div className='mt-80 mb-10 text-4xl font-bold flex flex-col items-center'>
-                    <h1>Search Your Dream Job here</h1>
+                    <h1>Search Your Dream Internship here</h1>
                 </div>
 
                 <div className="relative flex items-center gap-2">
@@ -309,7 +261,7 @@ const Home = () => {
                                 <img src={`./${company.logo}`} alt={`Logo of ${company.name}`} className="w-16 h-16 mx-auto mb-4" />
                                 <h2 className="text-xl font-bold">{company.name}</h2>
                                 <p className="text-gray-600">{company.description}</p>
-                                <button className="mt-4 bg-blue-700 hover:bg-yellow-300 text-black rounded-md px-4 py-2" onClick={Internship}>
+                                <button className="mt-4 bg-blue-700 hover:bg-yellow-300 text-black rounded-md px-4 py-2">
                                     View Internship
                                 </button>
                             </div>
@@ -357,11 +309,9 @@ const Home = () => {
                             </div>
                         ))}
                     </div>
-
-
                 </div>
                 <div className="mt-10 flex justify-center">
-                    <button className="bg-blue-500 w-1/6 hover:bg-blue-700 text-white rounded-md px-6 py-3" onClick={Internship}>
+                    <button className="bg-blue-500 w-1/6 hover:bg-blue-700 text-white rounded-md px-6 py-3" onClick={Internshipp}>
                         View All
                     </button>
                 </div>
@@ -372,7 +322,7 @@ const Home = () => {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-6 mx-60 ">
                         {yourCardArray.map(card => (
-                            <div key={card.id} className="h-36 w-64 bg-white rounded-md shadow-md overflow-hidden p-4 mb-5" onClick={Internship}>
+                            <div key={card.id} className="h-36 w-64 bg-white rounded-md shadow-md overflow-hidden p-4 mb-5">
                                 {/* Your card content goes here */}
                                 {card.icons && React.createElement(card.icons, { className: 'text-4xl mb-2' })}
                                 <h1>{card.role}</h1>
@@ -386,10 +336,8 @@ const Home = () => {
 
                 </div>
             </div>
-
             <Footer />
-
         </>
     );
 };
-export default Home;
+export default Home1;

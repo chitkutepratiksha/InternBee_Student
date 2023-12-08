@@ -1,323 +1,284 @@
 import React, { useState } from "react";
-import { FaUser, FaEnvelope, FaMobile, FaLock } from "react-icons/fa"; // Import icons
+import { FaUser, FaEnvelope, FaMobile, FaLock, FaEye, FaEyeSlash } from "react-icons/fa"; // Import icons
 import { useNavigate } from 'react-router-dom';
+import { useForm } from "react-hook-form";
 
 const Registration = () => {
-    const [formData, setFormData] = useState({
-        firstName: "",
-        lastName: "",
-        email: "",
-        mobile: "",
-        password: "",
-        confirmPassword: "",
-    });
-
     const [showEmailOtpInput, setShowEmailOtpInput] = useState(false);
     const [emailOtp, setEmailOtp] = useState("");
 
     const [showMobileOtpInput, setShowMobileOtpInput] = useState(false);
     const [mobileOtp, setMobileOtp] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const { register, handleSubmit, errors, watch, hasOwnProperty } = useForm();
+
     const navigate = useNavigate();
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value,
-        });
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
+
+    const toggleConfirmPasswordVisibility = () => {
+        setShowConfirmPassword(!showConfirmPassword);
+    };
+
+
+    const onSubmit = async (data) => {
+        const { confirmPassword, ...postData } = data;
+
+        // Add userType to the data
+        postData.userType = 'student';
+
+        console.log(postData);
+
+        try {
+            const response = await fetch('http://localhost:8000/auth/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+
+            const result = await response.json();
+            console.log(result);
+
+            // Redirect to another page after successful registration
+            alert("Data Submitted Successfully!");
+
+            navigate('/Signin');
+        } catch (error) {
+            console.error('Error:', error);
+        }
     };
 
     const sendEmailOTP = () => {
-        // Add logic to send OTP to the provided email address
-        // For simplicity, let's assume the OTP is sent successfully
+
         setShowEmailOtpInput(true);
     };
 
     const sendMobileOTP = () => {
-        // Add logic to send OTP to the provided mobile number
-        // For simplicity, let's assume the OTP is sent successfully
+
         setShowMobileOtpInput(true);
     };
 
     const verifyEmailOTP = () => {
-        // Add logic to verify the entered email OTP
-        // For simplicity, let's assume the OTP is verified successfully
+
         alert("Email OTP Verified Successfully!");
     };
 
     const verifyMobileOTP = () => {
-        // Add logic to verify the entered mobile OTP
-        // For simplicity, let's assume the OTP is verified successfully
+
         alert("Mobile OTP Verified Successfully!");
     };
 
     const handleGoogleRegistration = () => {
-        // Add logic for registering with Google
+
         alert("Registering with Google...");
     };
-    const handleSignIn = () => {
-        navigate('/Signin')
+
+    const handleSignin = () => {
+        navigate('/Signin');
     };
+    const handleHome = () => {
+        navigate('/Home')
+    }
 
     return (
-        <div className=" h-screen w-full flex items-center justify-center">
-            <div
-                className="bg-amber-300 p-8 rounded shadow-md w-full"
-                style={{ width: "40rem" }}
-            >
-                <h1 className="text-2xl font-semibold mb-4 text-center">
-                    Student Registration
-                </h1>
+        <div className="">
+            <div className="bg-slate-50 p-4 flex items-center justify-between border shadow-xl">
+                <div className="flex items-center space-x-2">
+                    <img src="./logo.png" alt="Logo" className="w-14 h-14 rounded-full" />
+                    <h1 className="text-4xl font-bold">Interns <span className="text-4xl font-bold text-amber-300">Bee</span></h1>
+                </div>
 
-                {/* Employer Registration Form */}
-                <form className="space-y-6">
-                    {/* Name Fields */}
-                    <div className="grid grid-cols-2 gap-4">
-                        <div className="flex flex-col mb-4 items-center">
-                            {/* <label
-                htmlFor="firstName"
-                className="text-sm font-medium text-gray-600"
-              >
-                First Name
-              </label> */}
-                            <div className="flex items-center">
-                                <div>
-                                    <FaUser className="mr-2 inline-block" size={25} />
-                                </div>
-                                <div>
-                                    <input
-                                        type="text"
-                                        id="firstName"
-                                        name="firstName"
-                                        value={formData.firstName}
-                                        onChange={handleChange}
-                                        className="mt-1 p-2 border rounded flex-grow"
-                                        placeholder="Enter First Name"
-                                    />
-                                </div>
-                            </div>
-                        </div>
+                <div className="items-center space-x-6">
+                    <a href="#" className="text-2xl font-bold focus:text-yellow-300 focus:border-yellow-300 focus:border-b-4" onClick={handleHome}>Home</a>
+                    <a href="#" className="text-2xl font-bold focus:text-yellow-300 focus:border-yellow-300 focus:border-b-4" >Companies</a>
+                    <a href="#" className="text-2xl font-bold focus:text-yellow-300 focus:border-yellow-300 focus:border-b-4" >Internships</a>
+                </div>
 
+                <div className="flex items-center space-x-6 mr-10">
+                    <a href="#" className="px-6 py-2  text-xl font-bold border rounded-md bg-yellow-300">Login</a>
+                    <a href="#" className="px-6 py-2  text-xl font-bold border rounded-md bg-yellow-300">Signup</a>
+                </div>
+            </div>
 
+            <div className="flex justify-center items-center mt-10">
+                <h1 className="text-4xl font-bold">Register and Apply for the Internship</h1>
+            </div>
 
-                        <div className="flex flex-col mb-4 items-center">
+            <div className="h-screen w-full flex items-center justify-between">
+                <img src="./design.jpg" alt="design" className="" />
 
-                            <div className="flex items-center">
-                                <div>
+                <div
+                    className=" p-8 rounded shadow-md w-full bg-slate-50 mr-10"
+                    style={{ width: "40rem" }}
+                >
+                    <h1 className="text-2xl font-semibold mb-4 text-center">
+                        Student Registration
+                    </h1>
 
-                                    <FaUser className="mr-2 inline-block" size={25} /></div>
-                                <div>
-                                    <input
-                                        type="text"
-                                        id="lastName"
-                                        name="lastName"
-                                        value={formData.lastName}
-                                        onChange={handleChange}
-                                        className="mt-1 p-2 border rounded flex-grow"
-                                        placeholder="Enter Last Name"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Email Input */}
-                    <div className="flex flex-col mb-4">
-                        {/* <label
-              htmlFor="email"
-              className="text-sm font-medium text-black"
-            >
-              <FaEnvelope className="mr-2 inline-block" size={25} />
-              Email Address
-            </label> */}
-                        <div className="flex items-center">
-                            <div> <FaEnvelope className="mr-2 inline-block" size={25} /></div>
-                            <div className="flex-grow">
-                                <input
-                                    type="email"
-                                    id="email"
-                                    name="email"
-                                    value={formData.email}
-                                    onChange={handleChange}
-                                    className=" mt-1 p-1 flex-grow border rounded"
-                                    placeholder="Enter Email"
-                                    style={{ width: "100%" }}
-                                /></div>
-                            {/* <button
-                type="button"
-                onClick={sendEmailOTP}
-                className=" px-2 ml-2 bg-black text-white py-2 rounded hover:bg-black"
-              >
-                Send OTP
-              </button> */}
-                        </div>
-                    </div>
-
-                    {/* Email OTP Input */}
-                    {showEmailOtpInput && (
+                    <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+                        {/* Full Name Input */}
                         <div className="flex flex-col mb-4">
-                            {/* <label
-                htmlFor="emailOtp"
-                className="text-sm font-medium text-gray-600"
-              >
-                <FaEnvelope className="mr-2 inline-block" size={25} />
-                Enter Email OTP
-              </label> */}
+                            <div className="flex items-center">
+                                <div> <FaUser className="mr-2 inline-block" size={25} /></div>
+                                <div className="flex-grow">
+                                    <input
+                                        type="text"
+                                        id="fullName"
+                                        name="fullName"
+                                        {...register("fullName", { required: "Full Name is required" })}
+                                        className="px-2 mt-1 p-2 flex-grow border rounded"
+                                        placeholder="Enter The Full Name"
+                                        style={{ width: "100%" }}
+                                    />
+
+                                </div>
+                            </div>
+                            {errors?.fullName && <p className="text-red-500">{errors.fullname.message}</p>}
+
+                        </div>
+
+                        {/* Email Input */}
+                        <div className="flex flex-col mb-4">
                             <div className="flex items-center">
                                 <div> <FaEnvelope className="mr-2 inline-block" size={25} /></div>
                                 <div className="flex-grow">
                                     <input
-                                        type="text"
-                                        id="emailOtp"
-                                        name="emailOtp"
-                                        value={emailOtp}
-                                        onChange={(e) => setEmailOtp(e.target.value)}
-                                        className="mt-1 p-2 flex-grow border rounded"
-                                        placeholder="Enter OTP"
+                                        type="email"
+                                        id="email"
+                                        name="email"
+                                        {...register("email", {
+                                            required: "Email is required",
+                                            pattern: {
+                                                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                                                message: "Invalid email address",
+                                            },
+
+                                        })}
+                                        className="mt-1 p-1 flex-grow border rounded"
+                                        placeholder="Enter Email"
                                         style={{ width: "100%" }}
-                                    /> </div>
-                                {/* <button
-                  type="button"
-                  onClick={verifyEmailOTP}
-                  className="px-2 ml-2 bg-black text-white py-2 rounded hover:bg-black"
-                >
-                  Verify OTP
-                </button> */}
+                                    />
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={sendEmailOTP}
+                                    className="px-2 ml-2 bg-black text-white py-2 rounded hover:bg-black"
+                                >
+                                    Send OTP
+                                </button>
                             </div>
+                            {errors?.email && <p className="text-red-500">{errors.email.message}</p>}
                         </div>
-                    )}
 
-                    {/* Mobile Input */}
-                    <div className="flex flex-col mb-4">
-                        {/* <label
-              htmlFor="mobile"
-              className="text-sm font-medium text-gray-600"
-            >
-              <FaMobile className="mr-2 inline-block" size={25} />
-              Mobile Number
-            </label> */}
-                        <div className="flex items-center">
-                            <div><FaMobile className="mr-2 inline-block" size={25} /></div>
-                            <div className="flex-grow">
-                                <input
-                                    type="tel"
-                                    id="mobile"
-                                    name="mobile"
-                                    value={formData.mobile}
-                                    onChange={handleChange}
-                                    className="mt-1 p-2 flex-grow border rounded"
-                                    placeholder="Enter Mobile No"
-                                    style={{ width: "100%" }}
-                                /> </div>
-                            {/* <button
-                type="button"
-                onClick={sendMobileOTP}
-                className="px-2 ml-2 bg-black text-white py-2 rounded hover:bg-black"
-              >
-                Send OTP
-              </button> */}
-                        </div>
-                    </div>
+                        {/* Email OTP Input */}
+                        {/* ... (similar structure as other OTP inputs) */}
 
-                    {/* Mobile OTP Input */}
-                    {showMobileOtpInput && (
+                        {/* Mobile Input */}
                         <div className="flex flex-col mb-4">
-                            {/* <label
-                htmlFor="mobileOtp"
-                className="text-sm font-medium text-gray-600"
-              >
-                
-                Enter Mobile OTP
-              </label> */}
                             <div className="flex items-center">
                                 <div><FaMobile className="mr-2 inline-block" size={25} /></div>
                                 <div className="flex-grow">
                                     <input
                                         type="text"
-                                        id="mobileOtp"
-                                        name="mobileOtp"
-                                        value={mobileOtp}
-                                        onChange={(e) => setMobileOtp(e.target.value)}
-                                        className=" px-2 mt-1 p-2 flex-grow border rounded"
-                                        placeholder="Enter OTP"
+                                        id="number"
+                                        name="number"
+                                        {...register("number", {
+                                            required: "Mobile Number is required",
+                                            pattern: {
+                                                value: /^[0-9]{10}$/i,
+                                                message: "Invalid mobile number",
+                                            },
+                                        })}
+                                        className="mt-1 p-2 flex-grow border rounded"
+                                        placeholder="Enter Mobile No"
                                         style={{ width: "100%" }}
-                                    /> </div>
-                                {/* <button
-                  type="button"
-                  onClick={verifyMobileOTP}
-                  className=" px-2 ml-2 bg-black text-white py-2 rounded hover:bg-black"
-                >
-                  Verify OTP
-                </button> */}
+                                    />
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={sendMobileOTP}
+                                    className="px-2 ml-2 bg-black text-white py-2 rounded hover:bg-black"
+                                >
+                                    Send OTP
+                                </button>
                             </div>
+                            {errors?.mobile && <p className="text-red-500">{errors.mobile.message}</p>}
                         </div>
-                    )}
 
-                    {/* Password Input */}
-                    <div className="flex flex-col mb-4">
-                        {/* <label
-              htmlFor="password"
-              className="text-sm font-medium text-gray-600"
-            >
-              <FaLock className="mr-2 inline-block" size={25} />
-              Password
-            </label> */}
-                        <div className="flex items-center">
-                            <div><FaLock className="mr-2 inline-block" size={25} /></div>
-                            <div className="flex-grow">
-                                <input
-                                    type="password"
-                                    id="password"
-                                    name="password"
-                                    value={formData.password}
-                                    onChange={handleChange}
-                                    className=" px-2 mt-1 p-2 flex-grow border rounded"
-                                    placeholder="Password"
-                                    style={{ width: "100%" }}
-                                /></div>
-                        </div>
-                    </div>
+                        {/* Mobile OTP Input */}
+                        {/* ... (similar structure as other OTP inputs) */}
 
-                    {/* Confirm Password Input */}
-                    <div className="flex flex-col mb-4">
-                        {/* <label
-              htmlFor="confirmPassword"
-              className="text-sm font-medium text-gray-600"
-            >
-              
-              Confirm Password
-            </label> */}
-                        <div className="flex items-center">
-                            <div><FaLock className="mr-2 inline-block" size={25} /></div>
-                            <div className="flex-grow">
-                                <input
-                                    type="password"
-                                    id="confirmPassword"
-                                    name="confirmPassword"
-                                    value={formData.confirmPassword}
-                                    onChange={handleChange}
-                                    className="mt-1 p-2 flex-grow border rounded"
-                                    placeholder="Confirm Password"
-                                    style={{ width: "100%" }}
-                                /></div>
+                        {/* Password Input */}
+                        <div className="flex flex-col mb-4">
+                            <div className="flex items-center">
+                                <div><FaLock className="mr-2 inline-block" size={25} /></div>
+                                <div className="flex-grow">
+                                    <input
+                                        type={showPassword ? "text" : "password"}
+                                        id="password"
+                                        name="password"
+                                        {...register("password", { required: "Password is required" })}
+                                        className="px-2 mt-1 p-2 flex-grow border rounded"
+                                        placeholder="Password"
+                                        style={{ width: "100%" }}
+                                    />
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={togglePasswordVisibility}
+                                    className="px-2 ml-2 bg-black text-white py-2 rounded hover:bg-black"
+                                >
+                                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                                </button>
+                            </div>
+                            {errors && errors.password && <p className="text-red-500">{errors.password.message}</p>}
                         </div>
-                    </div>
-                    <button
-                        type="button"
-                        onClick={handleSignIn}
-                        className="w-full bg-black text-white py-2 rounded mt-4 hover:bg-red-600"
-                    >
-                        Sign Up
-                    </button>
-                    {/* Register with Google Button */}
-                    <button
-                        type="button"
-                        onClick={handleGoogleRegistration}
-                        className="w-full bg-black text-white py-2 rounded mt-4 hover:bg-red-600"
-                    >
-                        Register with Google
-                    </button>
-                </form>
+
+                        {/* Confirm Password Input */}
+                        <div className="flex flex-col mb-4">
+                            <div className="flex items-center">
+                                <div><FaLock className="mr-2 inline-block" size={25} /></div>
+                                <div className="flex-grow">
+                                    <input
+                                        type={showConfirmPassword ? "text" : "password"}
+                                        id="confirmPassword"
+                                        name="confirmPassword"
+                                        {...register("confirmPassword", {
+                                            required: "Confirm Password is required",
+                                            validate: (value) => value === watch('password') || "Passwords do not match",
+                                        })}
+                                        className="mt-1 p-2 flex-grow border rounded"
+                                        placeholder="Confirm Password"
+                                        style={{ width: "100%" }}
+                                    />
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={toggleConfirmPasswordVisibility}
+                                    className="px-2 ml-2 bg-black text-white py-2 rounded hover:bg-black"
+                                >
+                                    {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                                </button>
+                            </div>
+                            {errors?.confirmPassword && <p className="text-red-500">{errors.confirmPassword.message}</p>}
+                        </div>
+
+                        <button
+                            type="submit"
+                            className="w-full bg-black text-white py-2 rounded mt-4 hover:bg-red-600"
+                        >
+                            Sign Up
+                        </button>
+                        <p className="text-sm font-light text-gray-500 dark:text-black">
+                            Already have an account ? <a href="#" className="font-medium text-primary-600 hover:underline dark:text-primary-500" onClick={handleSignin}>Log in </a>
+                        </p>
+                    </form>
+                </div>
             </div>
         </div>
     );

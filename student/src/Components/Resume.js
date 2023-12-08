@@ -53,8 +53,8 @@ const Resume = () => {
     return (
 
         <div className="flex">
-            <Sidebar />
-            <div className="flex-1 p-8 ml-96 bg-amber-300">
+            {/* <Sidebar /> */}
+            <div className="flex-1 p-8 bg-slate-50">
                 <h1 className='text-4xl font-bold'>Resume Format </h1>
                 <form>
                 <h1 className='text-2xl font-bold m-4 '>Personal Information</h1>  
