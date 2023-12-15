@@ -17,9 +17,7 @@ import Footer from './Components/Footer';
 
 
 
-import Login from './Employer/Login';
-import Signup from './Employer/Signup';
-import Packages from './Employer/Packages';
+
 
 function App() {
   return (
