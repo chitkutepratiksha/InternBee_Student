@@ -11,7 +11,8 @@ const Registration = () => {
     const [mobileOtp, setMobileOtp] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-    const { register, handleSubmit, errors, watch, hasOwnProperty } = useForm();
+    const { register, handleSubmit, setError,
+        formState: { errors }, watch, hasOwnProperty } = useForm();
 
     const navigate = useNavigate();
 
@@ -138,7 +139,9 @@ const onSubmit = async (data) => {
 
                                 </div>
                             </div>
-                            {errors?.fullName && <p className="text-red-500">{errors.fullname.message}</p>}
+                           
+                            {errors && errors.fullName && <p className="text-red-500">{errors.fullName.message}</p>}
+
 
                         </div>
 
@@ -172,7 +175,9 @@ const onSubmit = async (data) => {
                                     Send OTP
                                 </button>
                             </div>
-                            {errors?.email && <p className="text-red-500">{errors.email.message}</p>}
+                           
+                            {errors && errors.email && <p className="text-red-500">{errors.email.message}</p>}
+
                         </div>
 
                         {/* Email OTP Input */}
@@ -207,7 +212,11 @@ const onSubmit = async (data) => {
                                     Send OTP
                                 </button>
                             </div>
-                            {errors?.mobile && <p className="text-red-500">{errors.mobile.message}</p>}
+                        
+                      
+                            {errors && errors.mobile && <p className="text-red-500">{errors.mobile.message}</p>}
+
+
                         </div>
 
                         {/* Mobile OTP Input */}
@@ -265,7 +274,9 @@ const onSubmit = async (data) => {
                                     {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
                                 </button>
                             </div>
-                            {errors?.confirmPassword && <p className="text-red-500">{errors.confirmPassword.message}</p>}
+                          
+                            {errors && errors.confirmPassword && <p className="text-red-500">{errors.confirmPassword.message}</p>}
+
                         </div>
 
                         <button
